@@ -9,6 +9,11 @@ public class Teleop extends LinearOpMode {
     Drivetrain drivetrain;
     Intake intake;
     Shooter shooter;
+    Transfer transfer;
+    boolean shooterOn = false;
+    boolean shooterButtonWasPressed = false;
+
+
 
     @Override
     public void runOpMode() {
@@ -17,6 +22,7 @@ public class Teleop extends LinearOpMode {
         drivetrain = new Drivetrain(hardwareMap);
         intake = new Intake(hardwareMap);
         shooter = new Shooter(hardwareMap);
+        transfer = new Transfer(hardwareMap);
 
         // Ready message
         telemetry.addLine("==============================");
@@ -69,17 +75,35 @@ public class Teleop extends LinearOpMode {
             }
 
             // =========================
-            // SHOOTER
+            // Transfer
             // =========================
             if (gamepad1.left_trigger > 0.1) {
-                shooter.ShooterON();
+                transfer.transferON();
             }
             else if (gamepad1.left_bumper) {
-                shooter.ShooterReverse();
+                transfer.transferReverse();
+            }
+            else {
+                transfer.transferOFF();
+            }
+
+            // =========================
+            // SHOOTER
+            // X = Toggle Shooter ON/OFF
+            // =========================
+            if (gamepad1.x && !shooterButtonWasPressed) {
+                shooterOn = !shooterOn;
+            }
+
+            shooterButtonWasPressed = gamepad1.x;
+
+            if (shooterOn) {
+                shooter.ShooterON();
             }
             else {
                 shooter.ShooterOFF();
             }
+
         }
     }
 }
