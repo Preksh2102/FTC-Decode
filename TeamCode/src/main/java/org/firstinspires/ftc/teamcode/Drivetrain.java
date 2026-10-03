@@ -32,7 +32,7 @@ public class Drivetrain {
     public void drive(double leftX, double leftY, double rightX) {
 
         double forward = -leftY;
-        double strafe = leftX;
+        double strafe = -leftX;
         double rotate = rightX;
 
         double leftFrontPower =
